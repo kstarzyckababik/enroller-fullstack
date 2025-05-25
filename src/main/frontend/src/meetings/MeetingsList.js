@@ -1,10 +1,13 @@
-export default function MeetingsList({meetings, onDelete}) {
+export default function MeetingsList({meetings, onDelete, onSignIn, onSignOut}) {
     return (
         <table>
             <thead>
             <tr>
                 <th>Nazwa spotkania</th>
                 <th>Opis</th>
+                <th>Uczestnicy</th>
+                <th>Usuń</th>
+                <th>Rejestracja</th>
             </tr>
             </thead>
             <tbody>
@@ -13,9 +16,24 @@ export default function MeetingsList({meetings, onDelete}) {
                     <td>{meeting.title}</td>
                     <td>{meeting.description}</td>
                     <td>
+                        {
+                            meeting.participants.length > 0
+                                ? <ul>{meeting.participants.map(p => <li key={p}>{p}</li>)}</ul>
+                                : <em>Brak uczestników</em>
+                        }
+                    </td>
+                    <td>
                         <button type="button"
                         className="button-outline"
                                 onClick={() => onDelete(meeting)}> Usun </button>
+                    </td>
+                    <td>
+                        <button type="button"
+                                className="button-outline"
+                                onClick={() => onSignIn(meeting)}> Zapisz się!</button>
+                        <button type="button"
+                                className="button-outline"
+                                onClick={() => onSignOut(meeting)}> Wypisz się</button>
                     </td>
 
 
