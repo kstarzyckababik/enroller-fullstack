@@ -29,7 +29,7 @@ export default function MeetingsPage({username}) {
         });
         if (response.ok) {
             const newMeetings = await response.json();
-            const nextMeetings = [...meetings, meeting];
+            const nextMeetings = [...meetings, newMeetings];
             setMeetings(nextMeetings);
             setAddingNewMeeting(false);
         }
