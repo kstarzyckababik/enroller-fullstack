@@ -58,7 +58,9 @@ export default function MeetingsPage({username}) {
     function handleSignIn(meeting) {
         const nextMeetings = meetings.map(m => {
             if (m === meeting) {
+            if (!m.participants.includes(username)) {
                 m.participants = [...m.participants, username];
+                }
             }
             return m;
         });
