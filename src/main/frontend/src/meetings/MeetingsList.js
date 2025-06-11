@@ -23,9 +23,19 @@ export default function MeetingsList({meetings, onDelete, onSignIn, onSignOut}) 
                         }
                     </td>
                     <td>
-                        <button type="button"
-                        className="button-outline"
-                                onClick={() => onDelete(meeting)}> Usun </button>
+                        <button
+                            type="button"
+                            className="button-outline"
+                            onClick={() => onDelete(meeting)}
+                            disabled={meeting.participants.length > 0}
+                        >
+                            Usuń
+                        </button>
+                        {meeting.participants.length > 0 && (
+                            <div style={{ fontSize: '0.8em', color: 'gray' }}>
+                                Nie można usunąć – są zapisani uczestnicy
+                            </div>
+                        )}
                     </td>
                     <td>
                         <button type="button"

@@ -5,20 +5,26 @@ import MeetingsList from "./MeetingsList";
 export default function MeetingsPage({username}) {
     const [meetings, setMeetings] = useState([]);
     const [addingNewMeeting, setAddingNewMeeting] = useState(false);
+    const [loading, setLoading] = useState(true);
 
 
 
 
-    useEffect(() => {
-        const fetchMeetings = async () => {
-            const response = await fetch(`/api/meetings`);
-            if (response.ok) {
-                const meetings = await response.json();
-                setMeetings(meetings);
-            }
-        };
-        fetchMeetings();
-    }, []);
+
+
+
+useEffect(() => {
+    const fetchMeetings = async () => {
+        setLoading(true);
+        const response = await fetch(`/api/meetings`);
+        if (response.ok) {
+            const meetings = await response.json();
+            setMeetings(meetings);
+        }
+        setLoading(false);
+    };
+    fetchMeetings();
+}, []);
 
 
     async function handleNewMeeting(meeting) {
@@ -72,20 +78,30 @@ export default function MeetingsPage({username}) {
 
 
 
-    return (
-        <div>
-            <h2>Zajęcia ({meetings.length})</h2>
-            {
-                addingNewMeeting
-                    ? <NewMeetingForm onSubmit={(meeting) => handleNewMeeting(meeting)}/>
-                    : <button onClick={() => setAddingNewMeeting(true)}>Dodaj nowe spotkanie</button>
-            }
-            {meetings.length > 0 &&
-                <MeetingsList meetings={meetings} username={username}
-                              onDelete={handleDeleteMeeting}
-                              onSignIn={handleSignIn}
-                              onSignOut={handleSignOut}/>}
+return (
+    <div>
+        <h2>Zajęcia ({meetings.length})</h2>
 
-        </div>
-    )
+        {loading && <div className="loader"></div>}
+
+        {!loading && (
+            <>
+                {addingNewMeeting
+                    ? <NewMeetingForm onSubmit={handleNewMeeting}/>
+                    : <button onClick={() => setAddingNewMeeting(true)}>Dodaj nowe spotkanie</button>
+                }
+
+                {meetings.length > 0 &&
+                    <MeetingsList
+                        meetings={meetings}
+                        username={username}
+                        onDelete={handleDeleteMeeting}
+                        onSignIn={handleSignIn}
+                        onSignOut={handleSignOut}
+                    />}
+            </>
+        )}
+    </div>
+);
+
 }
